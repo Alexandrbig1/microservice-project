@@ -123,3 +123,26 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ignore AWS credentials and config
+.aws/
+*.pem
+
+# Ignore environment variable files
+.env
+.env.*
+
+# Ignore Terraform state files
+*.tfstate
+*.tfstate.*
+crash.log
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+
+# Ignore editor and OS files
+*.swp
+*.swo
+.DS_Store
+.idea/
+.vscode/

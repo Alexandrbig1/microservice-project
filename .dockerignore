@@ -14,3 +14,9 @@ build
 __pycache__/
 *.pyc
 *.pyo
+*.tfstate
+*.tfstate.*
+.terraform/
+.env.*
+.aws/
+*.pem
