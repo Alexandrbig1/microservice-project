@@ -26,21 +26,25 @@ aws-terraform/
 ## Usage
 
 **Initialize the project:**
+
 ```bash
 terraform init
 ```
 
 **Preview planned changes:**
+
 ```bash
 terraform plan
 ```
 
 **Apply the configuration:**
+
 ```bash
 terraform apply
 ```
 
 **Destroy all resources:**
+
 ```bash
 terraform destroy
 ```
@@ -50,25 +54,28 @@ terraform destroy
 ## Module Explanations
 
 ### `modules/s3-backend`
+
 - **Purpose:**  
   Manages the S3 bucket (with versioning) for storing Terraform state files and a DynamoDB table for state locking.
-- **Outputs:**  
+- **Outputs:**
   - S3 bucket name
   - DynamoDB table name
 
 ### `modules/vpc`
+
 - **Purpose:**  
   Provisions a VPC with a configurable CIDR block, three public and three private subnets, an Internet Gateway, and route tables.  
   (NAT Gateway can be added if needed.)
-- **Outputs:**  
+- **Outputs:**
   - VPC ID
   - Public subnet IDs
   - Private subnet IDs
 
 ### `modules/ecr`
+
 - **Purpose:**  
   Creates an AWS Elastic Container Registry (ECR) repository with image scanning on push.
-- **Outputs:**  
+- **Outputs:**
   - Repository URL
   - Repository name
   - Repository ARN
