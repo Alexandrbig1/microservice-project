@@ -1,5 +1,19 @@
 # microservice-project
 
+<img align="right" src="https://media.giphy.com/media/du3J3cXyzhj75IOgvA/giphy.gif" width="100"/>
+
+[![GitHub last commit](https://img.shields.io/github/last-commit/Alexandrbig1/microservice-project)](https://github.com/Alexandrbig1/microservice-project/commits/main)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
+[![AWS](https://img.shields.io/badge/AWS-232F3E?logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
+[![Terraform](https://img.shields.io/badge/Terraform-623CE4?logo=terraform&logoColor=white)](https://www.terraform.io/)
+[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Shell](https://img.shields.io/badge/Shell-FFD500?logo=gnu-bash&logoColor=black)](https://www.gnu.org/software/bash/)
+[![Bash](https://img.shields.io/badge/Bash-4EAA25?logo=gnubash&logoColor=white)](https://www.gnu.org/software/bash/)
+[![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Linux](https://img.shields.io/badge/Linux-FCC624?logo=linux&logoColor=black)](https://www.linux.org/)
+[![Nginx](https://img.shields.io/badge/Nginx-009639?logo=nginx&logoColor=white)](https://nginx.org/)
+[![Jenkins](https://img.shields.io/badge/Jenkins-D24939?logo=jenkins&logoColor=white)](https://www.jenkins.io/)
+
 ## DevOps CI/CD
 
 This repository contains a Kanban board and scripts for automating common DevOps tasks as part of the DevOps module.
@@ -10,7 +24,43 @@ This repository contains a Kanban board and scripts for automating common DevOps
 
 - Kanban board for task management
 - Bash scripts for environment setup and automation
-- Example: Automated installation of Node.js, npm, git, Docker, Express.js, etc.
+- Automated installation of Node.js, npm, git, Docker, Express.js, etc.
+- Modular AWS infrastructure provisioning with Terraform (VPC, S3, DynamoDB, ECR)
+
+---
+
+## AWS Infrastructure as Code (Terraform)
+
+This repository includes a modular Terraform project for provisioning AWS infrastructure as part of the DevOps curriculum.
+
+**Features:**
+
+- Remote state management using S3 and DynamoDB
+- Automated creation of VPCs with public/private subnets and routing
+- Elastic Container Registry (ECR) for Docker images
+- Modular structure for easy reuse and scalability
+
+**Usage:**
+
+1. Navigate to the AWS Terraform project directory:
+   ```bash
+   cd src/project/aws-terraform
+   ```
+2. Initialize and apply the infrastructure:
+   ```bash
+   terraform init
+   terraform plan
+   terraform apply
+   ```
+3. Destroy resources when finished:
+   ```bash
+   terraform destroy
+   ```
+
+**Note:**  
+The S3 bucket and DynamoDB table for remote state must be created manually before the first `terraform init`.
+
+For full details, see the [AWS Terraform module README](src/project/aws-terraform/README.md).
 
 ---
 

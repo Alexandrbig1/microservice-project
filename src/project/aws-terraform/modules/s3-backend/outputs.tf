@@ -1,10 +1,10 @@
 output "s3_bucket_name" {
   description = "S3 bucket name for storing Terraform state files"
-  value       = module.s3_backend.s3_bucket_name
+  value       = aws_s3_bucket.terraform_state.bucket
 }
 
 output "dynamodb_table_name" {
   description = "DynamoDB table name for Terraform state locking"
-  value       = module.s3_backend.dynamodb_table_name
+  value       = aws_dynamodb_table.terraform_locks.name
 }
 
