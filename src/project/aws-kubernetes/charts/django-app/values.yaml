@@ -1,14 +1,26 @@
 image:
-  repository: alexandrbig1/django-app
+  repository: 551376236582.dkr.ecr.us-east-1.amazonaws.com/django-app
   tag: latest
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
-  type: ClusterIP
-  port: 8000
+  type: LoadBalancer
+  port: 80
+  targetPort: 8000
 
-ingress:
-  enabled: false
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
 
 config:
   POSTGRES_PORT: 5432
