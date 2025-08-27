@@ -1,0 +1,31 @@
+# Default values for Argo CD Applications
+gitRepoUrl: "https://github.com/yana-shapka/my-microservice-project.git"
+targetRevision: "cicd-project"
+djangoAppNamespace: "django-app"
+
+# Applications to create
+applications:
+  - name: django-app
+    namespace: argocd
+    project: default
+    source:
+      repoURL: "{{ .Values.gitRepoUrl }}"
+      targetRevision: "{{ .Values.targetRevision }}"
+      path: "charts/django-app"
+    destination:
+      server: https://kubernetes.default.svc
+      namespace: "{{ .Values.djangoAppNamespace }}"
+    syncPolicy:
+      automated:
+        prune: true
+        selfHeal: true
+      syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+
+# Git repositories to configure
+repositories:
+  - url: "{{ .Values.gitRepoUrl }}"
+    type: git
+    name: django-app-repo
