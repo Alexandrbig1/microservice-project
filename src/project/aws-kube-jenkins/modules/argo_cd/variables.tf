@@ -23,7 +23,7 @@ variable "chart_version" {
 variable "git_repo_url" {
   description = "Git repository URL for Django app"
   type        = string
-  default     = "https://github.com/yana-shapka/my-microservice-project.git"
+  default     = "https://github.com/Alexandrbig1/microservice-project"
 }
 
 variable "git_target_revision" {
