@@ -1,0 +1,30 @@
+image:
+  repository: 551376236582.dkr.ecr.us-east-1.amazonaws.com/django-app
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8000
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+config:
+  POSTGRES_PORT: 5432
+  POSTGRES_HOST: db
+  POSTGRES_USER: django_user
+  POSTGRES_DB: django_db
+  POSTGRES_PASSWORD: django123password
