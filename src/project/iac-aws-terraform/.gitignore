@@ -1,0 +1,30 @@
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Helm charts archives
+charts/*.tgz
+
+# Kubernetes secrets (ВАЖЛИВО!)
+kubernetes-secrets.yaml
+*-secrets.yaml
+secrets/
+
+# AWS credentials
+.aws/
+*.pem
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.dbterraform.tfvars

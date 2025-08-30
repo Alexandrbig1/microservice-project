@@ -52,8 +52,8 @@ provider "helm" {
 # S3 Backend Module
 module "s3_backend" {
   source      = "./modules/s3-backend"
-  bucket_name = "terraform-state-bucket-project-woolf-003"
-  table_name  = "terraform-locks-project-woolf-003"
+  bucket_name = "terraform-state-bucket-final-project-woolf"
+  table_name  = "terraform-locks-final-project-woolf"
 }
 
 # VPC Module  
@@ -68,21 +68,22 @@ module "vpc" {
 
 # ECR Module
 module "ecr" {
-  source          = "./modules/ecr"
-  repository_name = "aws-iac-ecr"
+  source       = "./modules/ecr"
+  ecr_name     = "final-project-django-app"
+  scan_on_push = true
 }
 
 # EKS Module
 module "eks" {
   source = "./modules/eks"
 
-  cluster_name    = "terraform-helm-project-woolf-003-eks-cluster"
+  cluster_name    = "terraform-helm-final-project-woolf-eks-cluster"
   cluster_version = "1.28"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = concat(module.vpc.private_subnet_ids, module.vpc.public_subnet_ids)
 
-  node_group_name         = "terraform-helm-project-woolf-003-nodes"
+  node_group_name         = "terraform-helm-final-project-woolf-nodes"
   node_group_capacity     = "t3.medium"
   node_group_min_size     = 2
   node_group_max_size     = 6
@@ -91,7 +92,7 @@ module "eks" {
 
 # Security Group for EKS to RDS
 resource "aws_security_group" "eks_to_rds" {
-  name        = "woolf-003-eks-rds"
+  name        = "woolf-final3-eks-rds"
   description = "Allow EKS nodes to access RDS databases"
   vpc_id      = module.vpc.vpc_id
 
@@ -103,8 +104,8 @@ resource "aws_security_group" "eks_to_rds" {
   }
 
   tags = {
-    Name        = "woolf-003-rds"
-    Project     = "woolf-003"
+    Name        = "woolf-final-rds"
+    Project     = "woolf-final"
     Environment = "dev"
     ManagedBy   = "terraform"
   }
@@ -126,7 +127,7 @@ resource "aws_security_group_rule" "eks_nodes_to_rds" {
 module "rds_postgres" {
   source = "./modules/rds"
 
-  project_name = "woolf-003"
+  project_name = "woolf-final"
   environment  = "dev"
 
   # Main settings
@@ -167,7 +168,7 @@ module "rds_postgres" {
   ]
 
   tags = {
-    Project     = "woolf-003"
+    Project     = "woolf-final"
     Environment = "dev"
     ManagedBy   = "terraform"
     Module      = "rds"
@@ -190,4 +191,22 @@ module "argo_cd" {
   cluster_name     = module.eks.cluster_name
   cluster_endpoint = module.eks.cluster_endpoint
   namespace        = "argocd"
+}
+
+# Monitoring Module (Prometheus + Grafana)
+module "monitoring" {
+  source = "./modules/monitoring"
+
+  cluster_name     = module.eks.cluster_name
+  cluster_endpoint = module.eks.cluster_endpoint
+  namespace        = "monitoring"
+
+  # Storage configuration (smaller sizes for simplicity)
+  prometheus_storage_size = "20Gi"
+  grafana_storage_size    = "5Gi"
+
+  # Grafana configuration
+  grafana_admin_password = "GrafanaAdmin123!" # Change this to a secure password
+
+  depends_on = [module.eks]
 }

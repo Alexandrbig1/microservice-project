@@ -3,11 +3,6 @@ output "s3_bucket_name" {
   value       = module.s3_backend.s3_bucket_name
 }
 
-# output "dynamodb_table_name" {
-#   description = "DynamoDB table name for Terraform state locking"
-#   value       = module.s3_backend.dynamodb_table_name
-# }
-
 output "vpc_id" {
   description = "VPC ID"
   value       = module.vpc.vpc_id
@@ -101,6 +96,23 @@ output "postgres_connection_string" {
 output "postgres_security_group_id" {
   description = "PostgreSQL security group ID"
   value       = module.rds_postgres.security_group_id
+}
+
+# Monitoring outputs
+output "prometheus_url" {
+  description = "Prometheus server URL"
+  value       = module.monitoring.prometheus_url
+}
+
+output "grafana_url" {
+  description = "Grafana dashboard URL"
+  value       = module.monitoring.grafana_url
+}
+
+output "grafana_admin_password" {
+  description = "Grafana admin password"
+  value       = module.monitoring.grafana_admin_password
+  sensitive   = true
 }
 
 # Django configuration for Kubernetes

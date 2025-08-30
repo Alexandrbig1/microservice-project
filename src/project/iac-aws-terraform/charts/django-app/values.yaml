@@ -1,0 +1,42 @@
+replicaCount: 2
+
+image:
+  repository: 551376236582.dkr.ecr.us-east-1.amazonaws.com/django-app
+  tag: latest
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 8000
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 256Mi
+
+config:
+  SECRET_KEY: "django-insecure-u(qc9*j0w=ut5db3f#izfz_8szd7rruds!p8p5hgwz0in=+s7t"
+  DEBUG: "False"
+  ALLOWED_HOSTS: "localhost,.us-east-1.elb.amazonaws.com"
+  POSTGRES_PORT: 5432
+  POSTGRES_HOST: db
+  POSTGRES_USER: django_user
+  POSTGRES_DB: django_db
+  POSTGRES_PASSWORD: django123password
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

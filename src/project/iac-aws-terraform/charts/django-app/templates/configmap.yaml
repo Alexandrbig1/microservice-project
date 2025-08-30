@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "django-app.fullname" . }}-config
+  labels:
+    app: {{ include "django-app.name" . }}
+    chart: {{ include "django-app.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+data:
+  SECRET_KEY: "django-insecure-u(qc9*j0w=ut5db3f#izfz_8szd7rruds!p8p5hgwz0in=+s7t"
+  DEBUG: "False"
+  ALLOWED_HOSTS: "localhost,.us-east-1.elb.amazonaws.com"
+  POSTGRES_DB: "django_db"
+  POSTGRES_USER: "django_user"
+  POSTGRES_PASSWORD: "django123password"
+  POSTGRES_HOST: "postgres"
+  POSTGRES_PORT: "5432"
+
