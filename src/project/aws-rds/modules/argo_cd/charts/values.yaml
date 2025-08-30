@@ -1,5 +1,5 @@
 # Default values for Argo CD Applications
-gitRepoUrl: "https://github.com/yana-shapka/my-microservice-project.git"
+gitRepoUrl: "https://github.com/Alexandrbig1/microservice-project.git"
 targetRevision: "cicd-project"
 djangoAppNamespace: "django-app"
 

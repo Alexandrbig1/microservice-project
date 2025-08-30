@@ -17,7 +17,7 @@ This project provisions AWS infra for a Kubernetes-based Django app (EKS + ECR +
 ## Project Structure
 
 ```
-aws-kube-jenkins/
+aws-rds/
 ├── main.tf            # Connects and configures all modules
 ├── backend.tf         # Remote state backend configuration (S3 + DynamoDB)
 ├── outputs.tf         # Outputs from all modules

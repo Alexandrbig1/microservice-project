@@ -1,0 +1,98 @@
+# Admin configuration
+adminUser: admin
+adminPassword: GrafanaAdmin123!
+
+# Service configuration
+service:
+  type: LoadBalancer
+  port: 80
+
+# Persistence
+persistence:
+  enabled: true
+  storageClassName: gp2
+  size: 5Gi
+  accessModes:
+    - ReadWriteOnce
+
+# Resource configuration
+resources:
+  requests:
+    cpu: 250m
+    memory: 512Mi
+  limits:
+    cpu: 500m
+    memory: 1Gi
+
+# Datasources configuration
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-server.monitoring.svc.cluster.local
+      access: proxy
+      isDefault: true
+      editable: true
+
+# Dashboard providers
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+    - name: 'default'
+      orgId: 1
+      folder: ''
+      type: file
+      disableDeletion: false
+      editable: true
+      options:
+        path: /var/lib/grafana/dashboards/default
+
+# Pre-configured dashboards
+dashboards:
+  default:
+    kubernetes-overview:
+      gnetId: 15757
+      revision: 31
+      datasource: Prometheus
+    kubernetes-pods:
+      gnetId: 15760
+      revision: 20  
+      datasource: Prometheus
+    prometheus-stats:
+      gnetId: 2
+      revision: 2
+      datasource: Prometheus
+
+# Grafana configuration (without security section)
+grafana.ini:
+  server:
+    root_url: "%(protocol)s://%(domain)s/"
+  auth:
+    disable_login_form: false
+  auth.anonymous:
+    enabled: false
+  users:
+    viewers_can_edit: false
+
+# Plugins to install
+plugins:
+  - grafana-piechart-panel
+  - grafana-worldmap-panel
+
+# Security context
+securityContext:
+  runAsUser: 472
+  runAsGroup: 472
+  fsGroup: 472
+
+# Enable RBAC
+rbac:
+  create: true
+  pspEnabled: false
+
+# Service account
+serviceAccount:
+  create: true

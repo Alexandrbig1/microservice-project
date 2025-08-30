@@ -6,10 +6,11 @@ metadata:
     {{- include "django-app.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
+  selector:
+    app: {{ .Release.Name }}-django
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    - port: 80
+      targetPort: {{ .Values.service.port }}
       protocol: TCP
       name: http
-  selector:
-    {{- include "django-app.selectorLabels" . | nindent 4 }}
+
