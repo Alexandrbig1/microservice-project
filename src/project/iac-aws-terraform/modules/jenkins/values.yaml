@@ -15,9 +15,13 @@ controller:
   serviceType: LoadBalancer
   servicePort: 8080
   
+  # WARNING: do NOT commit real credentials. Use a secret (Kubernetes Secret, AWS Secrets Manager,
+  # or a CI secret) and reference it here or via the helmProvider / extraEnv.
+  # Example: set password to "{{ .Values.adminPassword | default (lookup secret ...) }}" or
+  # leave placeholder and inject using `kubectl create secret generic jenkins-admin --from-literal=adminPassword=...`.
   admin:
     username: admin
-    password: admin123
+    password: "<REPLACE_WITH_SECRET_OR_REFERENCE>"
 
 
   installPlugins: []

@@ -1,6 +1,9 @@
 # Admin configuration
+# WARNING: do NOT commit real credentials. Replace admin password with a secret reference.
+# Use `values.example.yaml` in the repo for non-sensitive defaults and inject the real value
+# from AWS Secrets Manager, SSM, or a Kubernetes Secret at deployment time.
 adminUser: admin
-adminPassword: GrafanaAdmin123!
+adminPassword: "<REPLACE_WITH_SECRET_OR_K8S_SECRET>"
 
 # Service configuration
 service:
