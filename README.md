@@ -3,6 +3,7 @@
 <img align="right" src="https://media.giphy.com/media/du3J3cXyzhj75IOgvA/giphy.gif" width="100"/>
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/Alexandrbig1/microservice-project)](https://github.com/Alexandrbig1/microservice-project/commits/main)
+[![CI](https://github.com/Alexandrbig1/microservice-project/actions/workflows/ci.yml/badge.svg)](https://github.com/Alexandrbig1/microservice-project/actions)
 [![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![AWS](https://img.shields.io/badge/AWS-232F3E?logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
 [![Terraform](https://img.shields.io/badge/Terraform-623CE4?logo=terraform&logoColor=white)](https://www.terraform.io/)
@@ -14,55 +15,104 @@
 [![Nginx](https://img.shields.io/badge/Nginx-009639?logo=nginx&logoColor=white)](https://nginx.org/)
 [![Jenkins](https://img.shields.io/badge/Jenkins-D24939?logo=jenkins&logoColor=white)](https://www.jenkins.io/)
 
-## DevOps CI/CD
+## microservice-project
 
-This repository contains a Kanban board and scripts for automating common DevOps tasks as part of the DevOps module.
+This repository is an educational microservices and DevOps playground that contains multiple example modules showing how to provision and operate microservice infrastructure using modern tooling: shell scripts, Docker, Kubernetes (Helm), Terraform (AWS), Argo CD, Jenkins, and GitHub Actions.
 
----
+The goal: provide small, reusable modules and hands-on examples for learning and improving DevOps & SRE skills. Each module can be used independently for experiments, CI/CD exercises, and demonstrations.
 
-## Features
+Key notes:
+- This repository is intentionally modular: many subfolders are separate exercises and example projects (Terraform modules, Helm charts, Dockerized apps, CI pipelines).
+- Secrets and sensitive values are not stored in the repo. Use environment variables, AWS Secrets Manager, SSM, or your CI secret store.
+- The examples are opinionated and simplified for learning; adapt them before using in production.
 
-- Kanban board for task management
-- Bash scripts for environment setup and automation
-- Automated installation of Node.js, npm, git, Docker, Express.js, etc.
-- Modular AWS infrastructure provisioning with Terraform (VPC, S3, DynamoDB, ECR)
+## What this repo contains
 
----
+Top-level structure (high level):
 
-## AWS Infrastructure as Code (Terraform)
+```
+src/
+   practice/         # lab exercises and small examples (Docker, Terraform, Helm, etc.)
+   project/          # larger composed projects and end-to-end examples (EKS, Jenkins, ArgoCD)
+   script/           # helper scripts for local env setup
+```
 
-This repository includes a modular Terraform project for provisioning AWS infrastructure as part of the DevOps curriculum.
+Highlights:
+- Terraform modules: `vpc`, `eks`, `ecr`, `rds`, `s3-backend`, `jenkins`, `argo_cd`.
+- Helm charts: `charts/django-app` and others for demo deployments.
+- Dockerized sample apps: Django, PHP, FastAPI in different folders under `practice/` and `project/`.
+- CI/CD examples: Jenkins Helm deployments, Argo CD configs, and example GitHub Actions workflows (see `.github/workflows`).
 
-**Features:**
+## Quick start (local)
 
-- Remote state management using S3 and DynamoDB
-- Automated creation of VPCs with public/private subnets and routing
-- Elastic Container Registry (ECR) for Docker images
-- Modular structure for easy reuse and scalability
+1. Clone the repo:
 
-**Usage:**
+```bash
+git clone https://github.com/Alexandrbig1/microservice-project.git
+cd microservice-project
+```
 
-1. Navigate to the AWS Terraform project directory:
-   ```bash
-   cd src/project/aws-terraform
-   ```
-2. Initialize and apply the infrastructure:
-   ```bash
-   terraform init
-   terraform plan
-   terraform apply
-   ```
-3. Destroy resources when finished:
-   ```bash
-   terraform destroy
-   ```
+2. Read the module you want to try, for example:
 
-**Note:**  
-The S3 bucket and DynamoDB table for remote state must be created manually before the first `terraform init`.
+```bash
+ls src/project/aws-kube-jenkins
+```
 
-For full details, see the [AWS Terraform module README](src/project/aws-terraform/README.md).
+3. Follow the README inside each module (e.g., `src/project/iac-aws-terraform/README.md`) for module-specific setup.
 
----
+## Common workflows
+
+Terraform (example):
+
+```bash
+cd src/project/iac-aws-terraform
+# ensure AWS credentials and region are set
+terraform init
+terraform plan
+terraform apply
+```
+
+Build & push Docker image to ECR (example):
+
+```bash
+docker build -t <aws_account>.dkr.ecr.<region>.amazonaws.com/django-app:TAG ./src/project/iac-aws-terraform/django
+aws ecr get-login-password --region <region> | docker login --username AWS --password-stdin <aws_account>.dkr.ecr.<region>.amazonaws.com
+docker push <aws_account>.dkr.ecr.<region>.amazonaws.com/django-app:TAG
+```
+
+Helm (install demo chart):
+
+```bash
+helm upgrade --install django-app src/project/iac-aws-terraform/charts/django-app --values src/project/iac-aws-terraform/charts/django-app/values.yaml --namespace app --create-namespace
+```
+
+Argo CD (example flow):
+
+1. Deploy Argo CD into cluster (see module `project/modules/argo_cd` or `src/project/...`).
+2. Register the repo/application in Argo CD pointing to the desired chart path (e.g., `charts/django-app`).
+
+Jenkins (demo):
+
+- A Helm-based Jenkins deployment is available in `src/project/...` (or `practice/...`). See the `values.example.yaml` in the module for credential wiring.
+
+CI / GitHub Actions
+
+- This repo contains example GitHub Actions workflows under `.github/workflows/` for CI and simple automation; update the workflow names and secrets for your account. The top badge links to `actions/workflows/ci.yml` if present.
+
+## Security & secrets
+
+- Do not commit secrets. Use AWS Secrets Manager, SSM Parameter Store, Kubernetes Secrets, or CI secret stores.
+- If you configure remote Terraform state (S3 + DynamoDB), create the S3 bucket and DynamoDB table before `terraform init`.
+
+## Contributing & learning
+
+This repository is a learning resource. Contributions, corrections, and improvements are welcome. Suggested ways to contribute:
+
+- Add clearer module READMEs with step-by-step lab guides.
+- Add CI tests (lint, terraform validate, helm lint) to `.github/workflows`.
+- Add small unit/integration tests for any scripts or code under `src/`.
+
+When contributing, prefer small, focused pull requests and include a short description of what was tested locally.
 
 ## License
 
